@@ -14,8 +14,10 @@ struct PersistenceController {
         let result = PersistenceController(inMemory: true)
         let viewContext = result.container.viewContext
         for _ in 0..<10 {
-            let newItem = Item(context: viewContext)
-            newItem.timestamp = Date()
+            let newNote = Note(context: viewContext)
+			newNote.lastUpdate = Date()
+			newNote.imageUrl = "https://images.pexels.com/lib/api/pexels-white.png"
+			newNote.body = "Lorem ipsum"
         }
         do {
             try viewContext.save()
@@ -30,7 +32,7 @@ struct PersistenceController {
 
     let container: NSPersistentContainer
 
-    init(inMemory: Bool = false) {
+    private init(inMemory: Bool = false) {
         container = NSPersistentContainer(name: "PrivateNotes")
         if inMemory {
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
